@@ -2,7 +2,7 @@ import React from "react";
 import { Image, Text, TextInput, View } from "react-native";
 import ButtonLittleLemon from "../components/ButtonLittleLemon";
 
-function Onboarding() {
+function Onboarding({ onComplete }) {
     const [firstName, setFirstName] = React.useState("");
     const [lastName, setLastName] = React.useState("");
     const [email, setEmail] = React.useState("");
@@ -11,7 +11,7 @@ function Onboarding() {
     const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
     const isButtonDisabled = !isFirstNameValid || !isEmailValid;
-    
+
     return (
         <View style={Styles.content}>
             <View style={Styles.header}>
@@ -25,7 +25,7 @@ function Onboarding() {
             <Text style={{ fontSize: 20, paddingLeft: 20 }}>
                 PERSONAL INFORMATION
             </Text>
-            
+
             <View style={{ padding: 20 }} />
 
             <View style={{ paddingHorizontal: 20, flex: 1 }}>
@@ -34,7 +34,11 @@ function Onboarding() {
 
             </View>
             <View style={{ paddingHorizontal: 20, paddingBottom: 40 }}>
-                <ButtonLittleLemon text="Register" onPress={() => { }} disabled={isButtonDisabled} />
+                <ButtonLittleLemon text="Register" onPress={async () => {
+                    if (!isButtonDisabled) {
+                        await onComplete();
+                    }
+                }} disabled={isButtonDisabled} />
             </View>
         </View>);
 
