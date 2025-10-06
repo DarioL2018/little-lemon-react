@@ -17,7 +17,7 @@ function App() {
   useEffect(() => {
     const checkOnboarding = async () => {
       try {
-        const value = await AsyncStorage.getItem('@onboardingCompleted');
+        const value = await AsyncStorage.getItem('kOnboardingCompleted');
         setState({
           isLoading: false,
           isOnboardingCompleted: value === 'true',
@@ -42,7 +42,7 @@ function App() {
         ) : (
           <Stack.Screen name="Onboarding">
             {props => <OnboardingScreen {...props} onComplete={async () => {
-              await AsyncStorage.setItem('@onboardingCompleted', 'true');
+              await AsyncStorage.setItem('kOnboardingCompleted', 'true');
               setState({ ...state, isOnboardingCompleted: true });
             }} />}
           </Stack.Screen>

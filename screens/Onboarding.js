@@ -1,8 +1,18 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React from "react";
 import { Image, Text, TextInput, View } from "react-native";
 import ButtonLittleLemon from "../components/ButtonLittleLemon";
 
 function Onboarding({ onComplete }) {
+
+    const saveChanges = async () => {
+        await AsyncStorage.multiSet([
+            ['kFirstName', firstName],
+            ['kLastName', lastName],
+            ['kEmail', email]
+        ]);
+    };
+
     const [firstName, setFirstName] = React.useState("");
     const [lastName, setLastName] = React.useState("");
     const [email, setEmail] = React.useState("");
@@ -36,6 +46,7 @@ function Onboarding({ onComplete }) {
             <View style={{ paddingHorizontal: 20, paddingBottom: 40 }}>
                 <ButtonLittleLemon text="Register" onPress={async () => {
                     if (!isButtonDisabled) {
+                        saveChanges();
                         await onComplete();
                     }
                 }} disabled={isButtonDisabled} />
