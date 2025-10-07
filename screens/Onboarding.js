@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React from "react";
 import { Image, Text, TextInput, View } from "react-native";
+import { SafeAreaView } from 'react-native-safe-area-context';
 import ButtonLittleLemon from "../components/ButtonLittleLemon";
 
 function Onboarding({ onComplete }) {
@@ -18,32 +19,38 @@ function Onboarding({ onComplete }) {
     const [email, setEmail] = React.useState("");
 
     const isFirstNameValid = /^[A-Za-zÀ-ÿ\s]+$/.test(firstName) && firstName.trim() !== "";
+    const isLastNameValid = /^[A-Za-zÀ-ÿ\s]+$/.test(lastName) && lastName.trim() !== "";
     const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
-    const isButtonDisabled = !isFirstNameValid || !isEmailValid;
+    const isButtonDisabled = !isFirstNameValid || !isLastNameValid || !isEmailValid;
 
     return (
-        <View style={Styles.content}>
-            <View style={Styles.header}>
+        <SafeAreaView style={styles.container} edges={['top']}>
+            <View style={styles.header}>
                 <Image source={require('../assets/images/logo.png')}
                     style={{ width: 179, height: 56, resizeMode: 'contain' }} />
             </View>
-            <View style={Styles.hero}>
-                <Text style={Styles.heroTitle}>Let’s get to know you</Text>
+            <View style={styles.hero}>
+                <Text style={styles.heroTitle}>Let’s get to know you</Text>
             </View>
             <View style={{ padding: 20 }} />
-            <Text style={{ fontSize: 20, paddingLeft: 20 }}>
+
+            <Text style={ styles.sectionTitle}>
                 PERSONAL INFORMATION
             </Text>
 
             <View style={{ padding: 20 }} />
 
-            <View style={{ paddingHorizontal: 20, flex: 1 }}>
-                <TextInput style={Styles.input} placeholder="First Name" value={firstName} onChangeText={setFirstName} />
-                <TextInput style={Styles.input} placeholder="Email" value={email} onChangeText={setEmail} keyboardType="email-address" />
+            <View style={{ paddingHorizontal: 20, marginBottom: 20 }}>
+                <Text style={styles.label}>First Name *</Text>
+                <TextInput style={styles.input} placeholder="First Name" value={firstName} onChangeText={setFirstName} />
+                <Text style={styles.label}>Last Name *</Text>
+                <TextInput style={styles.input} placeholder="Last Name" value={lastName} onChangeText={setLastName} />
+                <Text style={styles.label}>Email *</Text>
+                <TextInput style={styles.input} placeholder="Email" value={email} onChangeText={(text) => setEmail(text.toLowerCase())} keyboardType="email-address" />
 
             </View>
-            <View style={{ paddingHorizontal: 20, paddingBottom: 40 }}>
+            <View style={{ marginHorizontal: 20, marginBottom: 40 }}>
                 <ButtonLittleLemon text="Register" onPress={async () => {
                     if (!isButtonDisabled) {
                         saveChanges();
@@ -51,11 +58,11 @@ function Onboarding({ onComplete }) {
                     }
                 }} disabled={isButtonDisabled} />
             </View>
-        </View>);
+        </SafeAreaView>);
 
 }
 
-const Styles = {
+const styles = {
     content: {
         //padding: 16,
         flex: 1,
@@ -80,6 +87,11 @@ const Styles = {
         fontSize: 40,
         //fontWeight: 'bold',
     },
+    sectionTitle: { 
+        fontSize: 20, 
+        paddingLeft: 20,
+        fontWeight: 'bold'
+    },
     input: {
         height: 52,
         borderWidth: 1,
@@ -87,6 +99,12 @@ const Styles = {
         borderRadius: 8,
         paddingHorizontal: 10,
         marginBottom: 40,
+    },
+    label: {
+        fontSize: 18,
+        fontWeight: '600',
+        marginTop: 10,
+
     },
 };
 

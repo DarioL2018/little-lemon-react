@@ -91,6 +91,7 @@ const Profile = (props) => {
       'kSpecialOffers',
       'kNewsletter',
       'kOnboardingCompleted',
+      'kAvatarImage'
     ]);
     setState({ isLoading: false, isOnboardingCompleted: false });
   };
@@ -100,7 +101,7 @@ const Profile = (props) => {
       <ScrollView>
         <HeaderProfile />
         {/* Top bar */}
-        <Text style={styles.title}>Personal Information</Text>
+        <Text style={styles.title}>PERSONAL INFORMATION</Text>
         <Text style={styles.label}>Avatar</Text>
         <ProfileImage firstName={firstName} lastName={lastName} />
 
