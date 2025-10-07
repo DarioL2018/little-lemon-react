@@ -211,11 +211,12 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 20,
     backgroundColor: 'white',
+    flex: 1,
   },
   title: {
     fontSize: 18,
     fontWeight: '700',
-    marginBottom: 10,
+    marginBottom: 5,
   },
   subTitle: {
     fontSize: 16,

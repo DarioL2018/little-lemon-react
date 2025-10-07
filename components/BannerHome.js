@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#495E57',
     },
     topBarText: {
-        fontSize: 64,
+        fontSize: 60,
         color: '#F4CE14',
         fontWeight: '600',
     },
