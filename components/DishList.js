@@ -8,7 +8,7 @@ export default function DishList({ filteredMenu }) {
             <View style={styles.dishItem}>
                 <View style={{ flex: 1 }}>
                     <Text style={styles.dishTitle}>{item.title}</Text>
-                    <Text style={styles.dishDescription}>{item.description}</Text>
+                    <Text style={styles.dishDescription} numberOfLines={3} ellipsizeMode="tail">{item.description}</Text>
                     <Text style={styles.dishPrice}>${item.price}</Text>
                 </View>
                 <Image
