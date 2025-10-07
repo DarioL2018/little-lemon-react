@@ -1,18 +1,23 @@
 import { Text, TextInput, View } from "react-native";
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import {
   ScrollView,
   StyleSheet,
   TouchableOpacity
 } from 'react-native';
 import { MaskedTextInput } from 'react-native-mask-text';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { AppContext } from '../App';
 import ButtonLittleLemon from "../components/ButtonLittleLemon";
+import HeaderProfile from "../components/HeaderProfile";
 import ProfileImage from "../components/ProfileImage";
 
-const Profile = ({ navigation, selectedTab, setSelectedTab }) => {
+const Profile = (props) => {
+  const { setState } = useContext(AppContext);
+  
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -40,7 +45,7 @@ const Profile = ({ navigation, selectedTab, setSelectedTab }) => {
     loadData();
   }, []);
 
- 
+
   const saveChanges = async () => {
     await AsyncStorage.multiSet([
       ['kFirstName', firstName],
@@ -87,97 +92,101 @@ const Profile = ({ navigation, selectedTab, setSelectedTab }) => {
       'kNewsletter',
       'kOnboardingCompleted',
     ]);
-    //navigation.goBack();
+    setState({ isLoading: false, isOnboardingCompleted: false });
   };
 
   return (
-    <ScrollView style={styles.container}>
-      {/* Top bar */}
-      <Text style={styles.title}>Personal Information</Text>
-      <ProfileImage firstName={firstName} lastName={lastName} />
-      
-      {/* Input fields */}
-      <Text style={styles.label}>First Name</Text>
-      <TextInput
-        style={styles.input}
-        value={firstName}
-        onChangeText={setFirstName}
-      />
+    <SafeAreaView style={styles.container} edges={['top']}>
+      <ScrollView>
+        <HeaderProfile />
+        {/* Top bar */}
+        <Text style={styles.title}>Personal Information</Text>
+        <Text style={styles.label}>Avatar</Text>
+        <ProfileImage firstName={firstName} lastName={lastName} />
 
-      <View style={{ padding: 10 }} />
+        {/* Input fields */}
+        <Text style={styles.label}>First Name</Text>
+        <TextInput
+          style={styles.input}
+          value={firstName}
+          onChangeText={setFirstName}
+        />
 
-      <Text style={styles.label}>Last Name</Text>
-      <TextInput
-        style={styles.input}
-        value={lastName}
-        onChangeText={setLastName}
-      />
+        <View style={{ padding: 5 }} />
 
-      <View style={{ padding: 10 }} />
+        <Text style={styles.label}>Last Name</Text>
+        <TextInput
+          style={styles.input}
+          value={lastName}
+          onChangeText={setLastName}
+        />
 
-      <Text style={styles.label}>Email</Text>
-      <TextInput
-        style={styles.input}
-        keyboardType="email-address"
-        value={email}
-        onChangeText={setEmail}
-        autoCapitalize="none"
-      />
+        <View style={{ padding: 5 }} />
 
-      <View style={{ padding: 10 }} />
+        <Text style={styles.label}>Email</Text>
+        <TextInput
+          style={styles.input}
+          keyboardType="email-address"
+          value={email}
+          onChangeText={setEmail}
+          autoCapitalize="none"
+        />
 
-      <Text style={styles.label}>Phone Number</Text>
-      <MaskedTextInput
-        mask="(999) 999-9999"
-        keyboardType="phone-pad"
-        value={phone}
-        onChangeText={(text, rawText) => {
-          setPhone(rawText);
-        }}
-        placeholder="(123) 456-7890"
-        style={styles.input}
-      />
+        <View style={{ padding: 5 }} />
 
-      <View style={{ padding: 10 }} />
+        <Text style={styles.label}>Phone Number</Text>
+        <MaskedTextInput
+          mask="(999) 999-9999"
+          keyboardType="phone-pad"
+          value={phone}
+          onChangeText={(text, rawText) => {
+            setPhone(rawText);
+          }}
+          placeholder="(123) 456-7890"
+          style={styles.input}
+        />
 
-      <Text style={styles.subTitle}>Email notifications</Text>
+        <View style={{ padding: 1 }} />
 
-      <CustomCheckBox
-        label="Order statuses"
-        isChecked={isOrdersStatuses}
-        setIsChecked={setIsOrdersStatuses}
-      />
-      <CustomCheckBox
-        label="Password changes"
-        isChecked={isPasswordChanges}
-        setIsChecked={setIsPasswordChanges}
-      />
-      <CustomCheckBox
-        label="Special offers"
-        isChecked={isSpecialOffers}
-        setIsChecked={setIsSpecialOffers}
-      />
-      <CustomCheckBox
-        label="Newsletter"
-        isChecked={isNewsletter}
-        setIsChecked={setIsNewsletter}
-      />
+        <Text style={styles.subTitle}>Email notifications</Text>
 
-      <View style={{ padding: 10 }} />
-      <ButtonLittleLemon text="Log out" onPress={logout} disabled={false} />
-      {/* Logout */}
+        <CustomCheckBox
+          label="Order statuses"
+          isChecked={isOrdersStatuses}
+          setIsChecked={setIsOrdersStatuses}
+        />
+        <CustomCheckBox
+          label="Password changes"
+          isChecked={isPasswordChanges}
+          setIsChecked={setIsPasswordChanges}
+        />
+        <CustomCheckBox
+          label="Special offers"
+          isChecked={isSpecialOffers}
+          setIsChecked={setIsSpecialOffers}
+        />
+        <CustomCheckBox
+          label="Newsletter"
+          isChecked={isNewsletter}
+          setIsChecked={setIsNewsletter}
+        />
 
-      <View style={{ padding: 10 }} />
-      {/* Actions */}
-      <View style={[styles.row, { justifyContent: 'center' }]}>
-        <TouchableOpacity onPress={discardChanges} style={[styles.btn, { backgroundColor: 'white' }]}>
-          <Text style={[styles.btnText, { color: charcoal }]}>Discard changes</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={saveChanges} style={[styles.btn, { backgroundColor: charcoal }]}>
-          <Text style={[styles.btnText, { color: 'white' }]}>Save changes</Text>
-        </TouchableOpacity>
-      </View>
-    </ScrollView>
+        <View style={{ padding: 10 }} />
+        <ButtonLittleLemon text="Log out" onPress={logout} disabled={false} />
+        {/* Logout */}
+
+        <View style={{ padding: 10 }} />
+        {/* Actions */}
+        <View style={[styles.row, { justifyContent: 'center' }]}>
+          <TouchableOpacity onPress={discardChanges} style={[styles.btn, { backgroundColor: 'white' }]}>
+            <Text style={[styles.btnText, { color: charcoal }]}>Discard changes</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={saveChanges} style={[styles.btn, { backgroundColor: charcoal }]}>
+            <Text style={[styles.btnText, { color: 'white' }]}>Save changes</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
@@ -199,7 +208,7 @@ const CustomCheckBox = ({ label, isChecked, setIsChecked }) => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
+    paddingHorizontal: 20,
     backgroundColor: 'white',
   },
   title: {
@@ -227,6 +236,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '700',
     marginTop: 10,
+
   },
   input: {
     borderWidth: 1,

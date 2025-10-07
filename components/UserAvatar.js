@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useIsFocused } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 
@@ -14,8 +15,8 @@ const UserAvatar = ({
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     // Cargar imagen del almacenamiento
-    useEffect(() => {
-        const loadImage = async () => {
+
+    const loadImage = async () => {
             const uri = await AsyncStorage.getItem('kAvatarImage');
             if (uriExternal !== "" || uri) {
                 setImageUri(uri);
@@ -31,9 +32,19 @@ const UserAvatar = ({
                 setLastName((await AsyncStorage.getItem('kLastName')) || '');
             } else setLastName(lastNameExternal);
         };
+
+    useEffect(() => {  
         loadImage();
     }, [uriExternal]);
 
+    const isFocused = useIsFocused();
+
+  useEffect(() => {
+    if (isFocused) {
+      loadImage();
+    }
+  }, [isFocused]);
+    
     useEffect(() => {
         setFirstName(firstNameExternal);
         setLastName(lastNameExternal);

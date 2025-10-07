@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 16,
     fontWeight: '600',
-    fontFamily: 'Karla-Regular', // asegúrate de tener la fuente cargada
+    //fontFamily: 'Karla-Regular', // asegúrate de tener la fuente cargada
   },
 });
 
