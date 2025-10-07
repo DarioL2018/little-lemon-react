@@ -21,7 +21,7 @@ export async function createTable() {
         category TEXT
       );
     `);
-    console.log('Table created successfully');
+    //console.log('Table created successfully');
   } catch (error) {
     console.error('Error creating table:', error);
     throw error; // Lanza el error para que el llamador pueda manejarlo.
@@ -36,7 +36,7 @@ export async function getMenuItems() {
   try {
     // db.getAllAsync obtiene todas las filas que coinciden con la consulta.
     const allRows = await db.getAllAsync('SELECT * FROM menuitems');
-    console.log('Fetched rows from DB:', allRows.length);
+    //console.log('Fetched rows from DB:', allRows.length);
     return allRows;
   } catch (error) {
     console.error('Error fetching menu items:', error);
@@ -68,7 +68,7 @@ export async function saveMenuItems(menuItems) {
         );
       }
     });
-    console.log(`Inserted ${menuItems.length} items into DB`);
+    //console.log(`Inserted ${menuItems.length} items into DB`);
   } catch (error) {
     console.error('Transaction error in saveMenuItems:', error);
     throw error;
